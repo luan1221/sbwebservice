@@ -1,20 +1,18 @@
 package com.luan1221.sbwebservice.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 
 
 @NoArgsConstructor
 @Getter
-@EqualsAndHashCode
 @Entity
 @Table(name = "tb_product")
 public class Product implements Serializable {
@@ -27,7 +25,10 @@ public class Product implements Serializable {
     private Double price;
     private String imgUrl;
 
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "tb_product_category",
+            joinColumns = @JoinColumn(name = "product_id"),
+            inverseJoinColumns = @JoinColumn(name = "category_id"))
     private Set<Category> categories = new HashSet<>();
 
     public Product(Long id, String name, String description, Double price, String imgUrl) {
@@ -38,4 +39,16 @@ public class Product implements Serializable {
         this.imgUrl = imgUrl;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Product product = (Product) o;
+        return Objects.equals(name, product.name) && Objects.equals(description, product.description);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, description);
+    }
 }
