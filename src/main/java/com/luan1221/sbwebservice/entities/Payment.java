@@ -1,5 +1,6 @@
 package com.luan1221.sbwebservice.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
@@ -19,6 +20,7 @@ public class Payment implements Serializable {
 
     @OneToOne
     @MapsId
+    @JsonIgnore
     private Order order;
 
     public Payment(Long id, Instant moment, Order order) {
