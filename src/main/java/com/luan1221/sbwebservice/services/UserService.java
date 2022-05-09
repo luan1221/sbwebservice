@@ -2,6 +2,7 @@ package com.luan1221.sbwebservice.services;
 
 import com.luan1221.sbwebservice.entities.User;
 import com.luan1221.sbwebservice.repositories.UserRepository;
+import com.luan1221.sbwebservice.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,7 @@ public class UserService {
 
     public User findById(Long id) {
         Optional<User> optional = repository.findById(id);
-        return optional.get();
+        return optional.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public User insert(User user) {
